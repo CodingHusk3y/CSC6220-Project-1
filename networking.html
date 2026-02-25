@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking Concepts - CSC6220 Project 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="networking.html">Networking Concepts</a></li>
+                <li><a href="about.html">About/Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Networking Concepts</h1>
+        <p>This page explains how networking makes our website work by connecting various concepts to our actual deployment on GitHub Pages.</p>
+
+        <section id="dns">
+            <h2>DNS (Domain Name System)</h2>
+            <p>DNS is responsible for translating human-readable domain names into IP addresses. When you visit <strong>csc6220-project-1.github.io</strong>, your browser queries a DNS server to find the corresponding IP address.</p>
+            <p>In our case, the domain is a subdomain of <code>github.io</code>. GitHub uses <strong>A records</strong> (for IPv4) and <strong>AAAA records</strong> (for IPv6) or <strong>CNAME records</strong> to direct traffic to their content delivery network (CDN) servers.</p>
+        </section>
+
+        <section id="ip-addressing">
+            <h2>IP Addressing</h2>
+            <p>Our domain resolves to multiple IP addresses for redundancy and performance (load balancing). Based on our research, here are the addresses our site resolves to:</p>
+            <h3>IPv4 Addresses</h3>
+            <ul>
+                <li>185.199.108.153</li>
+                <li>185.199.109.153</li>
+                <li>185.199.110.153</li>
+                <li>185.199.111.153</li>
+            </ul>
+            <h3>IPv6 Addresses</h3>
+            <ul>
+                <li>2606:50c0:8000::153</li>
+                <li>2606:50c0:8001::153</li>
+                <li>2606:50c0:8002::153</li>
+                <li>2606:50c0:8003::153</li>
+            </ul>
+        </section>
+
+        <section id="protocols">
+            <h2>Protocols</h2>
+            <p>Our website is served over <strong>HTTPS (Hypertext Transfer Protocol Secure)</strong>, which uses TLS (Transport Layer Security) to encrypt communication between your browser and the server.</p>
+
+            <h3>Status Codes</h3>
+            <p>When a page is successfully loaded, the server returns a <strong>200 OK</strong> status code. If a page is not found, it returns a <strong>404 Not Found</strong>.</p>
+
+            <h3>Request/Response Headers</h3>
+            <p>Headers provide essential metadata about the request and response. Here is an example of the headers returned by our server:</p>
+            <pre>
+HTTP/2 200 OK
+server: GitHub.com
+content-type: text/html; charset=utf-8
+last-modified: Wed, 25 Feb 2026 04:53:37 GMT
+cache-control: max-age=600
+x-github-request-id: 748A:3A4AEC:93BD4:ABF78:699E75D8
+            </pre>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 CSC6220 Team. All rights reserved.</p>
+    </footer>
+</body>
+</html>
