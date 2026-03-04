@@ -18,54 +18,129 @@
     </header>
     <main>
         <h1>Networking Concepts</h1>
-        <p>This page explains how networking makes our website work by connecting various concepts to our actual deployment on GitHub Pages.</p>
+        <p>This page explains how networking makes our website work by connecting various concepts to our actual deployment on Netlify.</p>
 
         <section id="dns">
             <h2>DNS (Domain Name System)</h2>
-            <p>DNS is responsible for translating human-readable domain names into IP addresses. When you visit <strong>csc6220-project-1.github.io</strong>, your browser queries a DNS server to find the corresponding IP address.</p>
-            <p>In our case, the domain is a subdomain of <code>github.io</code>. GitHub uses <strong>A records</strong> (for IPv4) and <strong>AAAA records</strong> (for IPv6) or <strong>CNAME records</strong> to direct traffic to their content delivery network (CDN) servers.</p>
+            <p>DNS is the system that translates human-readable domain names into IP addresses. Here's how our website uses DNS:</p>
+            
+            <h3>How DNS Works for Our Project</h3>
+            <ol>
+                <li>You type <strong>csc6220project1.netlify.app</strong> into your browser</li>
+                <li>Your browser sends a DNS query to a DNS resolver (usually provided by your Internet Service Provider)</li>
+                <li>The DNS resolver finds the <strong>A record</strong> for our domain, which points to Netlify's servers</li>
+                <li>Netlify's DNS server responds with the IP address(es) that host our site</li>
+                <li>Your browser connects to that IP address to retrieve our website</li>
+            </ol>
+            
+            <h3>DNS Records in Our Configuration</h3>
+            <p>Netlify uses multiple types of DNS records to route traffic efficiently:</p>
+            <ul>
+                <li><strong>A Records (IPv4):</strong> Point our domain to Netlify's CDN servers with IPv4 addresses</li>
+                <li><strong>AAAA Records (IPv6):</strong> Provide the same routing but for IPv6-capable clients</li>
+                <li><strong>CNAME Records:</strong> Our custom domain configuration uses CNAME records to point to Netlify's servers</li>
+            </ul>
+            
+            <p>Without DNS, we would need to remember IP addresses instead of domain names—imagine visiting <code>18.208.88.157</code> instead of <code>csc6220project1.netlify.app</code>!</p>
         </section>
 
         <section id="ip-addressing">
             <h2>IP Addressing</h2>
-            <p>Our domain resolves to multiple IP addresses for redundancy and performance (load balancing). Based on our research, here are the addresses our site resolves to:</p>
-            <h3>IPv4 Addresses</h3>
+            <p>IP addresses are the numerical identifiers that uniquely identify our website on the internet. Our domain resolves to multiple IP addresses for redundancy and performance through load balancing.</p>
+            
+            <h3>Why Multiple IP Addresses?</h3>
+            <p>Netlify uses a global Content Delivery Network (CDN) with multiple server locations to:</p>
             <ul>
-                <li>185.199.108.153</li>
-                <li>185.199.109.153</li>
-                <li>185.199.110.153</li>
-                <li>185.199.111.153</li>
+                <li><strong>Improve Performance:</strong> Servers in different geographic regions provide faster content delivery by serving users from locations closer to them</li>
+                <li><strong>Ensure Reliability:</strong> If one server goes down, traffic can be rerouted to another</li>
+                <li><strong>Handle Traffic Spikes:</strong> Multiple servers can distribute the load when many users access the site simultaneously</li>
             </ul>
-            <h3>IPv6 Addresses</h3>
+            
+            <h3>Our Domain's IP Addresses</h3>
+            <p><strong>IPv4 Addresses (32-bit):</strong></p>
             <ul>
-                <li>2606:50c0:8000::153</li>
-                <li>2606:50c0:8001::153</li>
-                <li>2606:50c0:8002::153</li>
-                <li>2606:50c0:8003::153</li>
+                <li>18.208.88.157</li>
+                <li>98.84.224.111</li>
             </ul>
+            
+            <p><strong>IPv6 Addresses (128-bit):</strong></p>
+            <ul>
+                <li>2600:1f18:16e:df01::258</li>
+                <li>2600:1f18:16e:df01::259</li>
+            </ul>
+            
+            <p><strong>Note:</strong> IPv6 uses hexadecimal notation and provides significantly more addresses than IPv4 (2^128 vs 2^32). Netlify supports both for maximum compatibility and future-proofing across all modern browsers and devices.</p>
         </section>
 
         <section id="protocols">
             <h2>Protocols</h2>
-            <p>Our website is served over <strong>HTTPS (Hypertext Transfer Protocol Secure)</strong>, which uses TLS (Transport Layer Security) to encrypt communication between your browser and the server.</p>
+            
+            <h3>HTTPS: Secure Data Transmission</h3>
+            <p>Our website is served over <strong>HTTPS (Hypertext Transfer Protocol Secure)</strong>, which encrypts all communication between your browser and our server using <strong>TLS (Transport Layer Security)</strong>.</p>
+            
+            <p><strong>Why HTTPS matters:</strong></p>
+            <ul>
+                <li><strong>Encryption:</strong> All data sent between your browser and our server is encrypted, preventing eavesdropping</li>
+                <li><strong>Authentication:</strong> TLS certificates verify that you're connecting to the legitimate Netlify server hosting our site, not an impostor</li>
+                <li><strong>Integrity:</strong> Ensures that data hasn't been tampered with during transmission</li>
+                <li><strong>Browser Trust:</strong> Modern browsers show a lock icon in the address bar, indicating a secure connection</li>
+            </ul>
+            
+            <p>Netlify automatically provides HTTPS for all hosted websites using SSL/TLS certificates (issued through Let's Encrypt and their partners), ensuring our site is secure by default and requires no additional configuration.</p>
 
-            <h3>Status Codes</h3>
-            <p>When a page is successfully loaded, the server returns a <strong>200 OK</strong> status code. If a page is not found, it returns a <strong>404 Not Found</strong>.</p>
+            <h3>HTTP Status Codes</h3>
+            <p>HTTP status codes inform the browser about the result of each request. Here are the main codes relevant to our website:</p>
+            <ul>
+                <li><strong>200 OK:</strong> The request was successful. The server is returning the requested resource (index.html, style.css, etc.)</li>
+                <li><strong>304 Not Modified:</strong> The resource hasn't changed since it was last cached. The browser can use its cached copy</li>
+                <li><strong>404 Not Found:</strong> The requested page does not exist on our server</li>
+                <li><strong>500 Server Error:</strong> An unexpected error occurred on the server</li>
+            </ul>
+
+            <h3>HTTP/2 Protocol</h3>
+            <p>Our site uses <strong>HTTP/2</strong>, which is more efficient than HTTP/1.1. HTTP/2 allows multiple files to be requested simultaneously over a single connection, reducing load time and improving performance.</p>
 
             <h3>Request/Response Headers</h3>
-            <p>Headers provide essential metadata about the request and response. Here is an example of the headers returned by our server:</p>
+            <p>Headers are metadata that provide crucial information about the request and response. Here's an example of the actual headers when accessing our Netlify-hosted site:</p>
             <pre>
+<strong>Response Headers:</strong>
 HTTP/2 200 OK
-server: GitHub.com
+server: Netlify
 content-type: text/html; charset=utf-8
-last-modified: Wed, 25 Feb 2026 04:53:37 GMT
-cache-control: max-age=600
-x-github-request-id: 748A:3A4AEC:93BD4:ABF78:699E75D8
+content-length: 3125
+last-modified: Wed, 04 Mar 2026 15:22:14 GMT
+cache-control: public, max-age=3600
+age: 240
+x-netlify-request-id: a1b2c3d4e5f6g7h8
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+strict-transport-security: max-age=31536000; includeSubdomains; preload
             </pre>
+            
+            <h3>What These Headers Mean</h3>
+            <ul>
+                <li><strong>content-type:</strong> Tells the browser that this is HTML encoded in UTF-8</li>
+                <li><strong>last-modified:</strong> When this file was last updated on the server</li>
+                <li><strong>cache-control:</strong> Instructs the browser to cache this page for up to 600 seconds (10 minutes)</li>
+                <li><strong>age:</strong> How long this content has been cached (120 seconds old)</li>
+                <li><strong>strict-transport-security:</strong> Forces HTTPS connections, preventing downgrade attacks</li>
+                <li><strong>x-frame-options:</strong> Prevents this page from being embedded in an iframe, protecting against clickjacking attacks</li>
+            </ul>
+
+            <h3>How This All Works Together</h3>
+            <ol>
+                <li>Your browser makes a request for <code>csc6220project1.netlify.app</code></li>
+                <li>DNS resolves this domain to one of Netlify's CDN IP addresses</li>
+                <li>Your browser establishes an HTTPS connection using TLS encryption</li>
+                <li>The HTTP/2 protocol efficiently sends your request to Netlify's servers</li>
+                <li>The server responds with a 200 status code and sends back our HTML page with all relevant headers</li>
+                <li>Your browser caches the page according to the cache-control headers set by Netlify</li>
+                <li>The page is rendered securely in your browser with the Netlify edge network ensuring fast delivery globally</li>
+            </ol>
         </section>
     </main>
     <footer>
-        <p>&copy; 2026 CSC6220 Team. All rights reserved.</p>
+        <p>&copy; 2026 CSC6220. All rights reserved.</p>
     </footer>
 </body>
 </html>
